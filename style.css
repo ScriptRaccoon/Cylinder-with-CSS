@@ -139,6 +139,11 @@ label:hover {
     text-decoration: underline;
 }
 
-#myCheckbox:checked ~ #scene .cylinder {
+#depthToggler:checked ~ #scene .cylinder {
     --depth: 60px;
+}
+
+#openToggler:checked ~ #scene .front,
+#openToggler:checked ~ #scene .back {
+    background: var(--front-color);
 }
