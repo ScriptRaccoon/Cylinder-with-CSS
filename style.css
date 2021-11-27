@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #111;
+    overflow: hidden;
+    color: #bbb;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#scene {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 800px;
+    transform-style: preserve-3d;
+    --floor-height: 300px;
+}
+
+#container {
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: changeHeight 50s ease-in-out infinite;
+}
+
+@keyframes changeHeight {
+    0%,
+    10%,
+    100% {
+        transform: rotateX(-5deg);
+    }
+    30%,
+    40% {
+        transform: rotateX(20deg);
+    }
+    70%,
+    80% {
+        transform: rotateX(-40deg);
+    }
+}
+
+.cylinder {
+    --depth: 250px;
+    --width: 200px;
+    --strip-width: 20px;
+    --front-color: #66acb4;
+    --side-color: #357a8f;
+    width: var(--width);
+    height: var(--width);
+    position: relative;
+    animation: rotatearound 15s linear infinite;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cylinder > * {
+    position: absolute;
+}
+
+.cylinder:before {
+    color: white;
+    content: "";
+    transform: translateY(calc(var(--floor-height) - 2px))
+        rotateX(90deg) scale(1.2);
+    width: var(--width);
+    height: var(--depth);
+    border-radius: calc(0.3 * var(--width));
+    background: #0008;
+    filter: blur(40px);
+    transition: height 1s ease-in-out;
+}
+
+@keyframes rotatearound {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+.front,
+.back {
+    border-radius: 50%;
+    width: var(--width);
+    height: var(--width);
+    background: radial-gradient(
+        transparent 63%,
+        var(--front-color) 65%
+    );
+    transition: transform 1s ease-in-out;
+}
+
+.front {
+    transform: translateZ(calc(0.5 * var(--depth)));
+}
+
+.back {
+    transform: translateZ(calc(-0.5 * var(--depth)));
+}
+
+.strip {
+    width: var(--strip-width);
+    height: var(--depth);
+    background: var(--side-color);
+    transform: rotateX(90deg) rotateY(var(--n))
+        translateZ(calc(0.5 * var(--width)));
+    transition: height 1s ease-in-out;
+}
+
+#floor {
+    position: absolute;
+    background: radial-gradient(brown 0%, transparent 40%);
+    width: 10000px;
+    height: 10000px;
+    transform: translateY(var(--floor-height)) rotateX(90deg);
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+label {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+label:hover {
+    text-decoration: underline;
+}
+
+#myCheckbox:checked ~ #scene .cylinder {
+    --depth: 60px;
+}
